@@ -1,6 +1,6 @@
 import prime
 import math
-import time
+#import time
 
 def all_divisors(num, Prime, longval=None):
     """Finds divisors of a given number using Primes.
@@ -15,7 +15,7 @@ def all_divisors(num, Prime, longval=None):
         list: contains divisors for given number
 
     """
-    start = time.time()
+    #start = time.time()
     if Prime.is_prime(num) or num == 0:
         return [1,num] , 0, 0
     found_primes = [1]
@@ -47,9 +47,9 @@ def all_divisors(num, Prime, longval=None):
                 count += 1
 
     all_factors.append(num)
-    end = time.time()
-    first = end - start
-    start1 = time.time()
+    #end = time.time()
+    #first = end - start
+    #start1 = time.time()
     missed_primes = [a*b for a in found_primes for b in found_primes]
     for item in missed_primes:
         if num % item == 0 and item not in all_factors:
@@ -61,10 +61,10 @@ def all_divisors(num, Prime, longval=None):
         result = num / factor
         if result not in all_factors:
             all_factors.append(result)
-    end1 = time.time()
-    second = end1 - start1
+    #end1 = time.time()
+    #second = end1 - start1
 
-    return sorted(all_factors) , first, second
+    return sorted(all_factors) # , first, second
 def factor(num, primes):
     """Finds diviors of a given number, switches methods if number is too large.
 
@@ -88,19 +88,19 @@ def factor(num, primes):
         return divisors
  
 def main():
-    start = time.time()
+    #start = time.time()
     primes = prime.Prime()
-    total_first = 0
-    total_second = 0
-    for i in range(100000):
-        all_div, first, second = factor(i,primes)
-        total_first += first
-        total_second += second
+    #total_first = 0
+    #total_second = 0
+    for i in range(100):
+        print  factor(i,primes), len(factor(i,primes))
+    #    total_first += first
+    #    total_second += second
         
-    end = time.time()
-    print "took %f seconds to 1st part, %f seconds %f average to run second part" \
-          % (total_first,total_second, total_second/(10000.00-1000.00))
-    print "took", end - start, " seconds to run"
+    #end = time.time()
+    #print "took %f seconds to 1st part, %f seconds %f average to run second part" \
+    #      % (total_first,total_second, total_second/(10000.00-1000.00))
+    #print "took", end - start, " seconds to run"
 
 if __name__ == '__main__':
     main()
