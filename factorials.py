@@ -1,6 +1,8 @@
 import prime
 import math
-#import time
+import brutefactor
+import recursivelist
+import time
 
 def all_divisors(num, Prime, longval=None):
     """Finds divisors of a given number using Primes.
@@ -17,7 +19,7 @@ def all_divisors(num, Prime, longval=None):
     """
     #start = time.time()
     if Prime.is_prime(num) or num == 0:
-        return [1,num] , 0, 0
+        return [1,num] # , 0, 0
     found_primes = [1]
     prime_factors = []
     all_factors = []
@@ -65,6 +67,53 @@ def all_divisors(num, Prime, longval=None):
     #second = end1 - start1
 
     return sorted(all_factors) # , first, second
+
+def prime_factors(num, primes):
+    #print "number is", num
+    setup_start = time.time()
+    possible_primes = primes
+    prime_factors = []
+    done = False
+    temp = num
+    if num == 0:
+        return []
+    if num == 1:
+        return [1]
+    if num in possible_primes:
+        return [1,num]
+    setup_end = time.time()
+    #print "took %f seconds to set up" % (setup_end - setup_start)
+    find_prime_start = time.time()
+    while  temp != 1 and temp != 0:        
+        for prime in possible_primes:
+            ##print temp,prime ,"temp is prime is"
+            if temp % prime == 0:
+                prime_factors.append(prime)
+                temp = temp/prime
+                break
+            if prime == possible_primes[len(possible_primes)-1]:
+                return brutefactor.brutefactor(num)
+    find_prime_end = time.time()
+    #print "prime factors are", prime_factors
+    #print "took %f seconds to find initial primes" \
+          #% (find_prime_end - find_prime_start)
+    recursive_start = time.time()
+    all_factors = recursivelist.recursive_add(prime_factors)
+    recursive_end = time.time()
+    #print "took %f seconds to find recursive factors" \
+         # % (recursive_end - recursive_start)
+    append_start = time.time()
+    append_to_all_factors = all_factors.append
+    for prime in prime_factors:
+        append_to_all_factors(prime)
+    final_factors = [num /factor for factor in all_factors]
+    for item in final_factors:
+        append_to_all_factors(item)
+    append_end = time.time()
+    #print "took %f seconds to append" % (append_end - append_start)
+  
+    return sorted(list(set(all_factors)))
+    
 def factor(num, primes):
     """Finds diviors of a given number, switches methods if number is too large.
 
@@ -82,18 +131,26 @@ def factor(num, primes):
     except IndexError:  #switches to brute force if number is > 
         divisors = all_divisors(num,primes,longval=True)
         largest_div = divisors[len(divisors)-1]
-        for i in xrange(largest_div, num/2):
+        i = largest_div
+        while i < num/2 :
             if num % i == 0:
                 divisors.append(i)
+            i += 1
         return divisors
  
 def main():
     #start = time.time()
     primes = prime.Prime()
+    prime_list = primes.gen_prime_list()
     #total_first = 0
     #total_second = 0
-    for i in range(100):
-        print  factor(i,primes), len(factor(i,primes))
+    number = 1000
+    for i in range(1000,1001):
+        using_primes = factor(i,primes)
+        ##print using_primes, len(using_primes), i, "primes"
+        #print "calling using primes with", i
+        using_only_primes = prime_factors(i, prime_list)
+        print using_only_primes, len(using_only_primes), i, "onlyprimes"
     #    total_first += first
     #    total_second += second
         

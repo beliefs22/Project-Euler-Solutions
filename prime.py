@@ -6,7 +6,7 @@ class Prime:
         self.count = 0 # used to reset iterator
         self.index = 0 # used to reset iterator
         primefile = open(
-            '/home/beliefs22/python/ProjectEuler/Data/primetuples','r')
+            'C:\Python27\Project-Euler-Solutions\Data\primetuples','r')
         self.primes = pickle.load(primefile)
         primefile.close()
 
@@ -25,7 +25,7 @@ class Prime:
         else:
             return num in self.primes
 
-    def gen_Prime(self,length):
+    def gen_prime_list(self,length = None):
         """Return a list of first length primes.
 
         Args:
@@ -35,6 +35,8 @@ class Prime:
             tuple: tuple of the first  "length" primes
             
         """
+        if length > len(self.primes) or not length:
+            return self.primes
     
         return self.primes[:length]
 
