@@ -80,14 +80,13 @@ def main():
     p = prime.Prime()
     prime_list = p.gen_prime_list()
     for i in xrange(1,10000):
-         a = prime_factors(sum(xrange(1,i+1)), prime_list)
-         if len(set(a)) > 6:
-             b = factors(i,prime_list)
-             print "checking factors" , i 
-             if len(b) > 90:
-                 print i, "found one"
-
-
+        result = sum(xrange(1, i+1))
+        a = prime_factors(result, prime_list)
+        if len(set(a)) > 6:
+            b = factors(result,prime_list)
+            print "checking factors" , i
+            if len(b) > 300:
+                print i, "found one"
     print "done"
         
 
