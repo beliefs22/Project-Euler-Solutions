@@ -1,20 +1,22 @@
 import prime
 import factorials
 import time
+import recursivelist
 
-def triangle_sums_factors(n, primes):
-    answer = sum(xrange(1,n+1))
+def triangle_sums(n, primes):
 
-    return answer, factorials.factor(answer, primes)
+
+    return sum(xrange(1,n+1))
 
 def main():
     myfile = open("primeresults.txt", 'w')
     primes = prime.Prime()
+    primes_list = primes.gen_prime_list()
     for i in xrange(1,1000000):
-        result, factors = triangle_sums_factors(i, primes)
-        myfile.write("%s: %s %s %s \n" % \
-                (str(i), str(result), str(factors), str(len(factors))))
-        if len(factors) > 500:
+        prime_factors = recursivelist.factors(i, primes_list)
+        myfile.write("%s: %s %s \n" % \
+                (str(i), str(prime_factors), str(len(prime_factors))))
+        if len(prime_factors) > 7:
             myfile.write("yay\n")
 
     myfile.close()

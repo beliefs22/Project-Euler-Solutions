@@ -79,11 +79,14 @@ def main():
     number = 150000000
     p = prime.Prime()
     prime_list = p.gen_prime_list()
-    for i in range(1,1000000):
-         a = prime_factors(i, prime_list)
-         if len(set(a)) > 7:
-             print a
-             print "found one", i
+    for i in xrange(1,10000):
+         a = prime_factors(sum(xrange(1,i+1)), prime_list)
+         if len(set(a)) > 6:
+             b = factors(i,prime_list)
+             print "checking factors" , i 
+             if len(b) > 90:
+                 print i, "found one"
+
 
     print "done"
         
