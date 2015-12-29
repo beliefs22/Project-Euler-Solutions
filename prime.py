@@ -5,8 +5,7 @@ class Prime:
         
         self.count = 0 # used to reset iterator
         self.index = 0 # used to reset iterator
-        primefile = open(
-            'C:\Python27\Project-Euler-Solutions\Data\primetuples','r')
+        primefile = open('Data/primetuples','r')
         self.primes = pickle.load(primefile)
         primefile.close()
 
