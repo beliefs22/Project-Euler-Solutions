@@ -118,14 +118,10 @@ class Prime:
 
     def __iter__(self):
         """Iterates over entire list of primes. Expects user to stop."""
-        return self
-    def next(self):
-        if self.index == len(self.primes)-1:
-            raise StopIteration
-        temp = self.index
-        self.index = self.index +1
-        return self.primes[temp]
-    
+        return iter(self.primes)
+
+    def maxprime(self):
+        return self.primes[-1]
 
 def main():
     t = Prime()

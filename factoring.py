@@ -1,14 +1,5 @@
-import factorials
 import prime
-
-def recursive_mul(mylist, total=[]):
-    """Multipis numbers in a list with it self"""
-    if len(mylist) == 1:
-        return total
-    else:
-
-        return recursive_add(
-                mylist[1:], total + [mylist[0] * num for num in mylist[1:]])
+import time
 
 def recursive_perms(sequence):
     """Finds all possible combinationrs of a sequence"""
@@ -53,77 +44,52 @@ def combinations(iterable, r):
         yield tuple(pool[i] for i in indices)
 
 
-def recursive_combs(sequence):
-    #Finds all combinations of the prime factors to generate all proper factors
-    results = {}
-    for i in range(1, len(sequence) + 1):  # creates [] --> len(seq)*[]
-        combs = combinations(sequence, i)
-        for comb in combs:
-            results[comb] = results.get(comb, 0) + 1  # only add uniqe results
-    return results
-
-
-def split_sequence(sequence, size):
-    """Splits a sequence into pieces of given size"""
-    results = {}
-    i = 0
-    # run until size becomes greater than size of sequence
-    while i + size < len(sequence) + 1:
-        split = sequence[i:i + size]#create split at i
-        results[split] = results.get(split, 0) + 1
-        i += 1#move one step to create next split
-    return results
-
-
-def prime_factors(num, prime_list):
-    possible_primes = prime_list
+def prime_factors(num, Prime):
     prime_factors = []
     temp = num
     if num == 0:#raise exception?
         return []
     if num == 1:
-        return ['1']
-    if num in possible_primes:
-        return ['1', str(num)]#need to be strings?
+        return [1]
+    if Prime.is_prime(num) :
+        return [1, num]#need to be strings?
     #Keep dividing by primes until the result is two primes
     while temp != 1 and temp != 0:
-        for prime in possible_primes:
+        for prime in iter(Prime):
             if temp % prime == 0:
-                prime_factors.append(str(prime))
+                prime_factors.append(prime)
                 temp = temp / prime
                 break#if you find a prime stop and start loop again
     return prime_factors
 
-def factors_comb(num, prime_list):
+def factor(num, prime_list, withprime=False):
     #factoring using reursive combinations from python
     prime_facts = prime_factors(num, prime_list)
     results = {1:1,num:1}#add 1 and number for final list display
     for i in range(1,len(prime_facts)):
-        possible_combs = combinations(prime_facts, i)
+        all_factors = combinations(prime_facts, i)#b =[eval("*".join([str(num) for num in generator])) for generator in c]
         for comb in possible_combs:
             #first find value of perm to add only unique values
             temp = eval("*".join([str(num) for num in comb]))
             results[temp] = results.get(temp, 0) + 1
-    return sorted(results.keys()), prime_facts
+    if withprime:
+        return results.keys()
+    else:
+        return results.keys()
         
-def factors(num, prime_list):
-    #factoring using different recursive method to find combinations
-    all_perms = recursive_perms(prime_factors(num, prime_list))
-    factors = {1:1}
-    for perm in all_perms.keys():
-        possible_combs = recursive_combs(perm)
-        for comb in possible_combs.keys():
-            factor = eval("*".join([str(num) for num in comb]))
-            factors[factor] = factors.get(factor, 0) + 1
-    return sorted(factors.keys())
 
 
 def main():
     p = prime.Prime()
-    prime_list = p.gen_prime_list()
-    a= factors(10539, prime_list)
-    print a
-
+    for i in xrange(1,10):
+        a = factor(i, p)
+        print a, "factors are"
+        for i in range(1,len(a)+1):
+            for comb in combinations(a,i):
+                print comb
 
 if __name__ == '__main__':
+    start = time.time()
     main()
+    end = time.time()
+    print "took %f seconds to run 1,10000" % (end-start)

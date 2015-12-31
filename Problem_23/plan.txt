@@ -1,0 +1,9 @@
+1. find propper divisors of number
+2. use that to determine if it is an abundant number
+3. if it is, add it and it's multiples < 28123 to dictionary of numbers
+3a. using dictionary will prevent unecessary duplicates
+4. Using list of abundant numbers, create combinations of len 2 from list to
+4a determine all possible numbers that can be written as sums of two numbers
+5. loop through numbers between 1 and 28123 to see which aren't in the list of sums. 
+6. because the max is 28123, one you find all sums between 1 and 28123/2 you only have to check up to that number for any numbers after, because 28123/2 plus
+6a. n * 28123/2 + 1 will be bigger than 28123

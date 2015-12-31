@@ -1,5 +1,5 @@
 import trianglesums
-import factorials
+import factoring
 import prime
 
 def main():
@@ -14,7 +14,7 @@ def main():
                 if number == "":
                     choice = False
                 else:
-                    print trianglesums.triangle_sums_factors(int(number),p)
+                    print factoring.factor(sum(xrange(int(number))), p_list)
             except OverflowError as e:
                 print "Error", e, "for number: ", int(number)
     else:
@@ -24,7 +24,7 @@ def main():
                 if number == "":
                     choice = False
                 else:
-                    print factorials.prime_factors(int(number),p_list)
+                    print factoring.factor(int(number),p_list)
             except OverflowError as e:
                 print "Error", e, "for number: ", int(number)
 
