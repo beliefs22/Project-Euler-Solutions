@@ -28,8 +28,8 @@ def combinations(iterable, r):
     if r > n:
         return
     indices = range(r)
-
-    yield tuple(pool[i] for i in indices)#yeild helps performance?
+    
+    yield eval("*".join([str(pool[i]) for i in indices]))#yeild helps performance?
 
     while True:
         for i in reversed(range(r)):
@@ -41,7 +41,7 @@ def combinations(iterable, r):
         for j in range(i+1, r):
             indices[j] = indices[j-1] + 1
 
-        yield tuple(pool[i] for i in indices)
+        yield eval("*".join([str(pool[i]) for i in indices]))
 
 
 def prime_factors(num, Prime):
@@ -62,31 +62,26 @@ def prime_factors(num, Prime):
                 break#if you find a prime stop and start loop again
     return prime_factors
 
-def factor(num, prime_list, withprime=False):
+def factor(num, Prime, withprime=False):
     #factoring using reursive combinations from python
-    prime_facts = prime_factors(num, prime_list)
+    prime_facts = prime_factors(num, Prime)
     results = {1:1,num:1}#add 1 and number for final list display
     for i in range(1,len(prime_facts)):
-        all_factors = combinations(prime_facts, i)#b =[eval("*".join([str(num) for num in generator])) for generator in c]
-        for comb in possible_combs:
-            #first find value of perm to add only unique values
-            temp = eval("*".join([str(num) for num in comb]))
-            results[temp] = results.get(temp, 0) + 1
+        #b =[eval("*".join([str(num)for num in generator])) for generator in c]
+        possible_factors = combinations(prime_facts, i)#genrator of possible factors
+        for factor in possible_factors:
+            results[factor] = results.get(factor, 0) + 1
     if withprime:
-        return results.keys()
+        return results.keys(), prime_facts
     else:
         return results.keys()
-        
 
 
 def main():
     p = prime.Prime()
-    for i in xrange(1,10):
+    for i in xrange(1, 100000):
         a = factor(i, p)
-        print a, "factors are"
-        for i in range(1,len(a)+1):
-            for comb in combinations(a,i):
-                print comb
+
 
 if __name__ == '__main__':
     start = time.time()
