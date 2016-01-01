@@ -63,7 +63,7 @@ def prime_factors(num, Prime):
 def factor(num, Prime, withprime=False):
     #factoring using reursive combinations from python
     prime_facts = prime_factors(num, Prime)
-    results = {1:1,num:1}#add 1 and number for final list display
+    results = {1:1}#add 1 and number for final list display
     for i in range(1,len(prime_facts)):
         #b =[eval("*".join([str(num)for num in generator])) for generator in c]
         possible_factors = combinations(prime_facts, i)#genrator of possible factors
