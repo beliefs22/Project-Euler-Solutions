@@ -1,7 +1,9 @@
-import prime
-import time
 
-def recursive_perms(sequence):
+import prime
+from timeit import Timer
+import math
+
+def recursive_perms(sequence):    
     """Finds all possible combinationrs of a sequence"""
     if len(sequence) == 0:
         raise Exception("list must be > 0")
@@ -28,7 +30,6 @@ def combinations(iterable, r):
     if r > n:
         return
     indices = range(r)
-    
     yield eval("*".join([str(pool[i]) for i in indices]))#yeild helps performance?
 
     while True:
@@ -40,11 +41,10 @@ def combinations(iterable, r):
         indices[i] += 1
         for j in range(i+1, r):
             indices[j] = indices[j-1] + 1
-
         yield eval("*".join([str(pool[i]) for i in indices]))
 
 
-def prime_factors(num, Prime):
+def prime_factors(num, prime_list):
     prime_factors = []
     temp = num
     if num == 0:#raise exception?
@@ -53,36 +53,55 @@ def prime_factors(num, Prime):
         return [1]
     #Keep dividing by primes until the result is two primes
     while temp != 1 and temp != 0:
-        for prime in iter(Prime):
-            if temp % prime == 0:
+        for prime in prime_list:                
+            if temp % prime == 0:# found a prime that divides it
                 prime_factors.append(prime)
                 temp = temp / prime
                 break#if you find a prime stop and start loop again
     return prime_factors
 
-def factor(num, Prime, withprime=False):
+def factor(num, prime_list, withprime=False):
     #factoring using reursive combinations from python
-    prime_facts = prime_factors(num, Prime)
+    prime_facts = prime_factors(num, prime_list)
     results = {1:1,num:1}#add 1 and number for final list display
-    for i in range(1,len(prime_facts)):
+    for i in range(1,len(prime_facts)):        
         #b =[eval("*".join([str(num)for num in generator])) for generator in c]
         possible_factors = combinations(prime_facts, i)#genrator of possible factors
         for factor in possible_factors:
             results[factor] = results.get(factor, 0) + 1
     if withprime:
         return results.keys(), prime_facts
-    else:
+    else:        
         return results.keys()
 
-
 def main():
-    p = prime.Prime()
-    for i in xrange(1, 28130):
-        a = factor(i, p)        
+    s1 = """\
+    for i in xrange(1,500):
+        combinations(range(1,500),i)
+    """
+    s2 = """\
+    for i in xrange(1,10000):
+        prime_facts = prime_factors(i,p_list)
+    """
+    s3 = """\
+    for i in xrange(1,10000):
+        factor(i, prime_list)
+    """
 
+    setup2 = """\
+    from __main__ import prime_factors
+    import prime
+    p = prime.Prime()
+    p_list = p.prime_generator_count()
+    """
+    combtime = Timer(stmt=s1,setup="from __main__ import combinations")
+    primetime = Timer(stmt=s2,setup="from __main__ import prime_factors; import prime; p = prime.Prime(); p_list = p.gen_prime_list()")
+    factortime = Timer(stmt=s3,setup="from __main__ import factor; import prime; p = prime.Prime(); prime_list = p.gen_prime_list()")
+    print "Combtime ran in %f at %d" % (combtime.timeit(number=100), 1000)
+    print "Primtime ran in %f at %d" % (primetime.timeit(number=10), 1000)
+    print "Factortime ran in %f at %d" % (factortime.timeit(number=1), 1)
+    
 
 if __name__ == '__main__':
-    start = time.time()
     main()
-    end = time.time()
-    print "took %f seconds to run 1,10000" % (end-start)
+
