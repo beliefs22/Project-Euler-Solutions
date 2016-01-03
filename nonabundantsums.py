@@ -12,12 +12,11 @@ def non_abundant(maxnum):
     for num in xrange(1, maxnum+1):
         proper_divs = factor(num, primes_list)#find facors
         sums = sum(proper_divs)#sum of factors
-        abundant = (sums > num)
+        abundant = (sums > num)#Find abundant numbers
         if abundant:
             abundant_num[num] = abundant_num.get(num,0) + 1
             all_sums.append(num*2)
-        #print "%d: divs = %s sum of dis = %d abundant = %s" \
-              #% (num, str(proper_divs),sums, abundant)
+            #Create sums of all abundant numbers if < 28123
     all_sums = all_sums + \
                [sum(comb) for comb in combinations(abundant_num.keys(),2) \
                  if sum(comb) < maxnum+1]
@@ -27,9 +26,6 @@ def non_abundant(maxnum):
         non_abundant_sums[i] = (i in all_sums)
     print len(abundant_num), len(all_sums), len(set(all_sums)),len(non_abundant_sums)
     print sum([num for num in non_abundant_sums if not non_abundant_sums[num]])
-    
-
-    
 
 def main():
 
